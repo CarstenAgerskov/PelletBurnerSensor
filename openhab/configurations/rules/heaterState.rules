@@ -1,0 +1,41 @@
+import org.joda.time.*
+import org.openhab.core.library.types.*
+
+var DateTime startTimeStamp 
+var DateTime lowPowerTimeStamp
+var DateTime highPowerTimeStamp
+var DateTime standByTimeStamp
+
+
+rule "heater start"
+when
+  Item HeaterStatus changed from 0 to 1 
+then
+  startTimeStamp = new DateTime()
+  logInfo("Heater start", "Tid start" +  startTimeStamp.toString)
+  lowPowerTimeStamp = null // prevent wrong run time calculation, if lowPower state is skipped
+end
+
+rule "heater lowPower"
+when
+  Item HeaterStatus changed from 1 to 2 
+then
+  lowPowerTimeStamp = new DateTime()
+  if( startTimeStamp != null ) { // dont calculate interval if start time is unknown
+    logInfo("Heater start", "Start Interval " + lowPowerTimeStamp.minus(startTimeStamp.millis).toString)
+    postUpdate(StartTimeInterval, lowPowerTimeStamp.minus(startTimeStamp.millis).toString)
+    postUpdate(StartTimeIntervalMillis, lowPowerTimeStamp.minus(startTimeStamp.millis).millis)
+  }
+end
+
+rule "heater stop"
+when
+  Item HeaterStatus changed from 3 to 0 
+then
+  standByTimeStamp = new DateTime()
+  if( lowPowerTimeStamp != null ) { // dont calculate interval if start time is unknown
+    logInfo("Heater start", "Run Interval " + standByTimeStamp.minus(lowPowerTimeStamp.millis).toString)
+    postUpdate(RunTimeInterval, standByTimeStamp.minus(lowPowerTimeStamp.millis).toString)
+    postUpdate(RunTimeIntervalMillis, standByTimeStamp.minus(lowPowerTimeStamp.millis).millis.intValue)
+  }
+end

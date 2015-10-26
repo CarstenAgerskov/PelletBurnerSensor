@@ -1,0 +1,15 @@
+rule "heaternotify_on"
+when
+  Item HeaterAlarm changed from OPEN to CLOSED 
+then
+  notifyMyAndroid("Heater alarm", "Fyr kører")
+  pushover("Fyr kører",-1)  
+end
+
+rule "heaternotify_off"
+when
+  Item HeaterAlarm changed from CLOSED to OPEN
+then
+  notifyMyAndroid("Heater alarm", "Fyr stoppet")
+  pushover("Fyr stoppet",1)
+end

@@ -1,0 +1,15 @@
+/* excerpts of file concerning PelletBurner */
+
+Group All
+
+Group:Contact:OR(OPEN, CLOSED) 	gAlarms 	"Alarms [(%d)]"	<contact> (All)
+Group gHeater "Fyr" <heating> (All)
+
+
+Contact HeaterAlarm "Fyr [MAP(PBMonitorAlarm.map):%s]" <siren> (gAlarms,gHeater) {mqtt="<[mysensor:mysensors/50/2/V_TRIPPED:state:MAP(contactFromMqtt.map)]"}
+Number HeaterStatus "Fyret er [MAP(PBMonitor.map):%s]" <heating> (gHeater) { mqtt="<[mysensor:mysensors/50/1/V_VAR1:state:default]" }
+DateTime StartTimeInterval "Fyr start tid [%1$tH:%1$tM:%1$tS]" (gHeater)
+DateTime RunTimeInterval "Fyr kørsel tid [%1$tH:%1$tM:%1$tS]" (gHeater)
+
+
+

@@ -1,0 +1,13 @@
+sitemap hjemme label="Hjemme"
+{
+	Frame {
+		Group item=gAlarms icon="siren"
+		Group item=gHeater
+	}
+	
+	Frame label="Grafer" {
+		Text label="Fyr" icon="pie" {
+			Chart item=HeaterStatus period=D refresh=60000
+		}
+	}		
+}
