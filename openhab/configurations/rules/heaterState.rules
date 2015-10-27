@@ -24,7 +24,6 @@ then
   if( startTimeStamp != null ) { // dont calculate interval if start time is unknown
     logInfo("Heater start", "Start Interval " + lowPowerTimeStamp.minus(startTimeStamp.millis).toString)
     postUpdate(StartTimeInterval, lowPowerTimeStamp.minus(startTimeStamp.millis).toString)
-    postUpdate(StartTimeIntervalMillis, lowPowerTimeStamp.minus(startTimeStamp.millis).millis)
   }
 end
 
@@ -36,6 +35,5 @@ then
   if( lowPowerTimeStamp != null ) { // dont calculate interval if start time is unknown
     logInfo("Heater start", "Run Interval " + standByTimeStamp.minus(lowPowerTimeStamp.millis).toString)
     postUpdate(RunTimeInterval, standByTimeStamp.minus(lowPowerTimeStamp.millis).toString)
-    postUpdate(RunTimeIntervalMillis, standByTimeStamp.minus(lowPowerTimeStamp.millis).millis.intValue)
   }
 end
